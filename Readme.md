@@ -197,5 +197,80 @@
 
 # 4. Tecnologias e Regulamentações
 ## 4.1 Tecnologia e Padrões 
+
+<table border="1" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; line-height: 1.6;">
+  <thead>
+    <tr style="background-color: #2c3e50; color: white;">
+      <th style="padding: 10px; width: 25%;">Campo</th>
+      <th style="padding: 10px;">Descrição</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">ID do Risco</td>
+      <td style="padding: 8px;">RSK-TEC-001</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Descrição</td>
+      <td style="padding: 8px;">Interrupções (buffering) na reprodução de arquivos Lossless (FLAC/WAV) devido ao tamanho elevado dos dados.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Categoria</td>
+      <td style="padding: 8px;">Técnico / Performance</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Probabilidade</td>
+      <td style="padding: 8px;">Alta</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Impacto</td>
+      <td style="padding: 8px;">Alto</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Ação de Mitigação</td>
+      <td style="padding: 8px;">Implementar CDNs para cache geográfico e otimização de entrega de pacotes de áudio.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Plano de Contingência</td>
+      <td style="padding: 8px;">Reduzir automaticamente o bitrate para MP3 (transcodificação em tempo real) caso a conexão do usuário apresente instabilidade.</td>
+    </tr>
+  </tbody>
+</table>
+
 ## 4.2 Legislação e Regulamentações
-# 5. Análise de Riscos e Mitigação 
+<table border="1" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; line-height: 1.6;">
+  <thead>
+    <tr style="background-color: #2c3e50; color: white;">
+      <th style="padding: 10px; width: 25%;">Campo</th>
+      <th style="padding: 10px;">Descrição</th>
+    </tr>
+  </thead>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">ID do Risco</td>
+      <td style="padding: 8px;">RSK-LEG-001</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Descrição</td>
+      <td style="padding: 8px;">Upload de conteúdo protegido por direitos autorais (pirataria) por parte dos usuários.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Categoria</td>
+      <td style="padding: 8px;">Legislação / Compliance</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Probabilidade</td>
+      <td style="padding: 8px;">Média</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Impacto</td>
+      <td style="padding: 8px;">Crítico</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Ação de Mitigação</td>
+      <td style="padding: 8px;">Obrigar o aceite de Termos de Uso e declaração de autoria no momento do upload.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Plano de Contingência</td>
+      <td style="padding: 8px;">Implementar ferramenta de "Report" e canal direto para remoção imediata (Take-down) de conteúdos denunciados.</td>
+    </tr>
+  </tbody>
