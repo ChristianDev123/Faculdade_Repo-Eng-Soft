@@ -110,6 +110,90 @@
 
 # 3. Restrições do Projeto e do Produto
 
+<table border="1" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; line-height: 1.5;">
+  <thead>
+    <tr style="background-color: #2c3e50; color: white;">
+      <th style="padding: 10px; width: 25%;">Campo</th>
+      <th style="padding: 10px;">Descrição</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Restrição ID</td>
+      <td style="padding: 8px;">NF-CONST-001</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Título</td>
+      <td style="padding: 8px;">Restrições Tecnológicas e de Formato</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Descrição</td>
+      <td style="padding: 8px;">O sistema deve processar obrigatoriamente arquivos de áudio nos formatos FLAC e WAV para garantir a alta fidelidade, além de MP3 para compatibilidade.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Origem</td>
+      <td style="padding: 8px;">Equipe de Arquitetura e Engenharia de Áudio</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Critérios de verificação</td>
+      <td style="padding: 8px;">a. Testes de upload com diferentes extensões; b. Validação do bitrate original após o processamento no servidor.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Relacionamento</td>
+      <td style="padding: 8px;">a. RF02 (Upload de músicas); b. RF10 (Informações da música atual).</td>
+    </tr>
+    <tr style="height: 20px; background-color: #eee;"><td colspan="2"></td></tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Restrição ID</td>
+      <td style="padding: 8px;">NF-CONST-002</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Título</td>
+      <td style="padding: 8px;">Conformidade Legal e Privacidade (LGPD)</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Descrição</td>
+      <td style="padding: 8px;">O projeto deve seguir estritamente as normas da Lei Geral de Proteção de Dados (LGPD) para o tratamento de dados de artistas e ouvintes.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Origem</td>
+      <td style="padding: 8px;">Departamento Jurídico / Compliance</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Critérios de verificação</td>
+      <td style="padding: 8px;">a. Presença de termos de uso e política de privacidade; b. Implementação de função para exclusão total de dados pelo usuário.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Relacionamento</td>
+      <td style="padding: 8px;">a. RF01 (Cadastro de perfis); b. RF09 (Histórico de reprodução).</td>
+    </tr>
+    <tr style="height: 20px; background-color: #eee;"><td colspan="2"></td></tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Restrição ID</td>
+      <td style="padding: 8px;">NF-CONST-003</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Título</td>
+      <td style="padding: 8px;">Infraestrutura e Custo de Armazenamento</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Descrição</td>
+      <td style="padding: 8px;">O limite máximo de armazenamento por arquivo individual não deve exceder 200MB para evitar custos proibitivos de egress e storage.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Origem</td>
+      <td style="padding: 8px;">Gerência Financeira / DevOps</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Critérios de verificação</td>
+      <td style="padding: 8px;">a. Validação do tamanho do arquivo no front-end e no back-end durante o upload.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Relacionamento</td>
+      <td style="padding: 8px;">a. RF02 (Upload de músicas); b. Seção 5 (Volume de dados).</td>
+    </tr>
+  </tbody>
+</table>
 
 # 4. Tecnologias e Regulamentações
 ## 4.1 Tecnologia e Padrões 
