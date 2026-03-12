@@ -16,6 +16,11 @@
   assim gerando rentabilidade e crescimento organico no médio/longo prazo.
 
 ## 1.2 Perspectiva do Produto 
+
+  Frente à grandes softwares já estabelecidos no mercado, onde grandes labels/gravadoras possuem vantagem competitiva em ranking de sugestão de músicas por serem mais recomendadas por um algoritmo tendencioso, o SoundWave se destaca pela personalização, entregando uma melhor experiência ao artista que não possui uma grande equipe para gerir sua carreira e que deseja alcançar um público através da correlação entre gostos musicais.
+  
+  O público-alvo a qual desejamos atacar, são artistas independentes com pequenas/média ou nenhuma equipe de apoio, que deseja acompanhar o crescimento de sua carreira de maneira um pouco mais detalhada, recebendo simples relatórios de seus ouvintes, e que deseja alcançar nichos de ouvintes que escutam gêneros músicais semelhantes ao seu estilo.
+
 ## 1.3 Capacidades do Produto
 # 2. Descrição dos Usuários
 # 3. Restrições do Projeto e do Produto
