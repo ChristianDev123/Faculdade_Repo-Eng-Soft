@@ -53,44 +53,64 @@
 
 # 2. Descrição dos Usuários
 
-<table border="1" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+<table border="1" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px;">
   <thead>
-    <tr style="background-color: #f2f2f2; text-align: left;">
-      <th style="padding: 12px;">Tipo de Usuário</th>
-      <th style="padding: 12px;">Perfil / Persona</th>
-      <th style="padding: 12px;">Principais Objetivos</th>
-      <th style="padding: 12px;">Dores (Problemas que resolve)</th>
+    <tr style="background-color: #2c3e50; color: white;">
+      <th style="padding: 10px;">Atributo</th>
+      <th style="padding: 10px;">Artista Independente (USER-001)</th>
+      <th style="padding: 10px;">Ouvinte (USER-002)</th>
+      <th style="padding: 10px;">Administrador (USER-003)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="padding: 10px; font-weight: bold;">Artista Independente</td>
-      <td style="padding: 10px;">Músicos, bandas e produtores sem contrato com grandes gravadoras.</td>
-      <td style="padding: 10px;">Publicar músicas, construir uma base de fãs e analisar dados de audiência.</td>
-      <td style="padding: 10px;">Burocracia de distribuidoras tradicionais e falta de dados claros sobre quem ouve sua música.</td>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Descrição</td>
+      <td style="padding: 8px;">Músico ou produtor que publica conteúdo autoral.</td>
+      <td style="padding: 8px;">Usuário final que consome e organiza músicas.</td>
+      <td style="padding: 8px;">Profissional responsável pela manutenção e segurança.</td>
     </tr>
     <tr>
-      <td style="padding: 10px; font-weight: bold;">Ouvinte "Médio"</td>
-      <td style="padding: 10px;">Entusiastas de música que buscam novidades fora do mainstream.</td>
-      <td style="padding: 10px;">Descobrir artistas locais, criar playlists exclusivas e apoiar a cena independente.</td>
-      <td style="padding: 10px;">Algoritmos repetitivos de grandes plataformas que focam apenas em hits comerciais.</td>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Experiência Técnica</td>
+      <td style="padding: 8px;">Média; familiaridade com formatos de áudio e metadados.</td>
+      <td style="padding: 8px;">Básica; usuário comum de aplicativos móveis.</td>
+      <td style="padding: 8px;">Alta; conhecimento avançado em TI e bancos de dados.</td>
     </tr>
     <tr>
-      <td style="padding: 10px; font-weight: bold;">Fã Engajado</td>
-      <td style="padding: 10px;">Usuários que seguem artistas específicos de perto.</td>
-      <td style="padding: 10px;">Acompanhar lançamentos em tempo real e ter uma conexão direta com o artista.</td>
-      <td style="padding: 10px;">Dificuldade em saber quando seu artista favorito lançou algo novo sem depender de redes sociais.</td>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Frequência de Uso</td>
+      <td style="padding: 8px;">Ocasional (uploads) a Regular (análise de dados).</td>
+      <td style="padding: 8px;">Alta; uso diário para reprodução de áudio.</td>
+      <td style="padding: 8px;">Regular; monitoramento e suporte contínuo.</td>
     </tr>
     <tr>
-      <td style="padding: 10px; font-weight: bold;">Administrador (Interno)</td>
-      <td style="padding: 10px;">Equipe de suporte e moderação do SoundWave.</td>
-      <td style="padding: 10px;">Garantir o cumprimento dos termos de uso e a qualidade técnica do catálogo.</td>
-      <td style="padding: 10px;">Upload de conteúdo impróprio ou violação de direitos autorais por terceiros.</td>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Principais Objetivos</td>
+      <td style="padding: 8px;">Divulgar trabalho e analisar métricas de alcance.</td>
+      <td style="padding: 8px;">Descobrir novos artistas e organizar playlists.</td>
+      <td style="padding: 8px;">Gerenciar permissões e garantir integridade do sistema.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Desafios</td>
+      <td style="padding: 8px;">Complexidade no upload de arquivos grandes (WAV/FLAC).</td>
+      <td style="padding: 8px;">Encontrar conteúdos novos fora do mainstream.</td>
+      <td style="padding: 8px;">Acesso rápido a informações críticas e logs.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Restrições</td>
+      <td style="padding: 8px;">Pode gerenciar apenas o próprio catálogo.</td>
+      <td style="padding: 8px;">Acesso limitado a funções administrativas.</td>
+      <td style="padding: 8px;">Exige autenticação multifator (MFA) para segurança.</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold; background-color: #f2f2f2;">Requisitos Principais</td>
+      <td style="padding: 8px;">Dashboard de estatísticas e gestor de uploads.</td>
+      <td style="padding: 8px;">Player estável e motor de busca eficiente.</td>
+      <td style="padding: 8px;">Painel de controle, relatórios e logs de auditoria.</td>
     </tr>
   </tbody>
 </table>
 
 # 3. Restrições do Projeto e do Produto
+
+
 # 4. Tecnologias e Regulamentações
 ## 4.1 Tecnologia e Padrões 
 ## 4.2 Legislação e Regulamentações
