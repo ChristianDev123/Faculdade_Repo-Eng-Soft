@@ -23,17 +23,25 @@
 
 ## 1.3 Capacidades do Produto
 
+![Wireframe completo do produto](https://media.discordapp.net/attachments/717020283009237082/1482562413713948702/image.png?ex=69b76758&is=69b615d8&hm=56dc912102efa61bc215ffb2ab32d4bd225975a40b1352efbaf3ee474161b1a0&=&format=webp&quality=lossless)
+
 * Dashboard de Analytics em Tempo Real
   
 >   Através deste dashboard usuários com média/baixa familiaridade com tecnologia conseguirá acompanhar a performance de sua música e entender qual o público impactado.
+
+![Wireframe do Dashboard de Analytics mostrando estatísticas do artista](https://media.discordapp.net/attachments/717020283009237082/1482558738895343707/Dashboard.png?ex=69b763eb&is=69b6126b&hm=5b7d6449577c07caa6346a234b76bc1bf9edcdf32e4df355f50c438aaa070d47&=&format=webp&quality=lossless)
 
 * Gerenciador de Lançamentos
 
 >  Esta ferramenta auxiliará o usuário a programar lançamentos de forma automática e intuitiva.
 
+![Wireframe do Perfil destacando a área de publicação](https://media.discordapp.net/attachments/717020283009237082/1482559749542117386/image.png?ex=69b764dc&is=69b6135c&hm=29c958e6a2adeac5a05a34bedc6d771850cf6c3439c39c0a72a282e3779e04c7&=&format=webp&quality=lossless)
+
 * Área para links externos / sobre mim
 
 >  Através desta ferramenta, artistas conseguem divulgar sua história, redes sociais e sites para vendas de ingressos dos seus próximos shows.
+
+![Wireframe do Perfil destacando a área de biografia e links externos](https://media.discordapp.net/attachments/717020283009237082/1482560155219660850/image.png?ex=69b7653d&is=69b613bd&hm=44b4e21bb60e1602a9bba6275161a3b15d9ae30d6b8fbd979309f52d2e826da2&=&format=webp&quality=lossless)
 
 * Área/Selo de Verificados
 
@@ -43,13 +51,19 @@
 
 >   Este sendo o Core do negócio, um motor de buscas otimizado para recomendar ao usuário músicas semelhantes ao seu gosto musical impacta diretamente a experiência de uso do software.
 
+![Tela principal destacando a ferramenta de busca e recomendação](https://media.discordapp.net/attachments/717020283009237082/1482561513058472140/image.png?ex=69b76681&is=69b61501&hm=6f8cefd20c2e2e77a7a8f7ec57e30281082630b83456b227d04fb975056347b8&=&format=webp&quality=lossless)
+
 * Sistema de "Curtição" (Like) e Favoritos
 
 >   Auxiliando tanto o usuário, criando uma playlist de favoritos, quanto ao algoritmo de recomendação de músicas essa feature também faz parte do core do negócio.
 
+![Tela do perfil destacando musicas e playlists curtidas](https://media.discordapp.net/attachments/717020283009237082/1482562564360507576/image.png?ex=69b7677c&is=69b615fc&hm=172b53e1e7d31faa9ebfe2ab49d8b5c0d4a3dbc96d318209997e32f312c11e65&=&format=webp&quality=lossless)
+
 * Painel de Cadastro de usuário
 
 >    Esta feature impacta diretamente na segurança de uso no aplicativo, e garante a não criação de contas falsas, além de personalizar o uso do app tanto para o caso do artista quanto para o ouvinte.
+
+![Tela de Login](https://media.discordapp.net/attachments/717020283009237082/1482560639359520808/image.png?ex=69b765b1&is=69b61431&hm=b55e7c70d70911ebf6d0a6f1a39103e779d00717add911bcd96e2a462017b97e&=&format=webp&quality=lossless) ![Tela de Cadastro](https://media.discordapp.net/attachments/717020283009237082/1482560741910253761/image.png?ex=69b765c9&is=69b61449&hm=1cc4c0b678a1633997b72a270a24dda91b7662bd5fe713dc70e37c88eda3477c&=&format=webp&quality=lossless)
 
 # 2. Descrição dos Usuários
 
