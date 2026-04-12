@@ -20,12 +20,20 @@ Conforme as capacidades do produto, o sistema foi dividido nos seguintes subsist
 ### 2.1 Histórias de Usuário
 As histórias seguem o padrão solicitado. Abaixo, apresentamos exemplos cruciais para o core do negócio:
 
+### 2.1.1 Histórias de Usuário - Portal do Artista (SUB1)
+
 | ID | História | Critérios de Aceitação | Dependências | Fonte |
 | :--- | :--- | :--- | :--- | :--- |
 | US-SUB1-001 | **Como** artista, **eu quero** realizar o upload de músicas em FLAC/WAV, **para que** eu mantenha a alta fidelidade da minha obra. | (a) O arquivo não deve exceder 200MB. (b) O sistema deve validar o formato antes de iniciar. | Nenhuma | USER-001 |
 | US-SUB1-002 | **Como** artista, **eu quero** acessar um dashboard de analytics, **para que** eu entenda o alcance da minha música por nicho. | (a) Exibir gráficos de reprodução em tempo real. (b) Filtrar dados por gênero musical. | US-SUB1-001 | USER-001 |
-| US-SUB2-001 | **Como** ouvinte, **eu quero** buscar músicas por filtros de nicho, **para que** eu descubra artistas fora do mainstream. | (a) Permitir busca por gênero e tags de comunidade. (b) Resultados devem priorizar afinidade sonora. | Nenhuma | USER-002 |
-| US-SUB3-001 | **Como** admin, **eu quero** acessar logs de auditoria de uploads, **para que** eu garanta a integridade e segurança do catálogo. | (a) Registrar data, hora e IP do upload. (b) Permitir busca por ID de artista. | US-SUB1-001 | USER-003 |
+| US-SUB1-003 | **Como** artista, **eu quero** programar a data de lançamento de uma música, **para que** eu possa coordenar minha divulgação nas redes sociais. | (a) Permitir escolha de data e hora futura. (b) Música deve ficar oculta até o prazo. | US-SUB1-001 | USER-001 |
+| US-SUB1-004 | **Como** artista, **eu quero** adicionar links externos e biografia no meu perfil, **para que** os ouvintes conheçam minha história e comprem ingressos. | (a) Permitir campos para URLs (Instagram, site). (b) Limite de 500 caracteres para a bio. | Nenhuma | USER-001 |
+| US-SUB1-005 | **Como** artista, **eu quero** solicitar o selo de verificado, **para que** eu garanta a propriedade autoral e passe credibilidade. | (a) Upload de documento de identidade. (b) Status de "Pendente" até revisão do Admin. | Nenhuma | USER-001 |
+| US-SUB1-006 | **Como** artista, **eu quero** visualizar quais playlists de usuários minha música foi adicionada, **para que** eu identifique meus maiores fãs. | (a) Lista atualizada de nomes de playlists públicas. (b) Contagem total de adições. | US-SUB1-001 | USER-001 |
+| US-SUB1-007 | **Como** artista, **eu quero** editar os metadados (capa, título, gênero) de uma música já postada, **para que** eu possa corrigir erros. | (a) Atualização refletir em até 5 minutos no app. (b) Manter histórico de versões anteriores. | US-SUB1-001 | USER-001 |
+| US-SUB1-008 | **Como** artista, **eu quero** gerar um relatório mensal de performance em PDF, **para que** eu possa apresentar os resultados para possíveis parceiros. | (a) Incluir total de plays, curtidas e novos seguidores. (b) Opção de selecionar o período. | US-SUB1-002 | USER-001 |
+| US-SUB1-009 | **Como** artista, **eu quero** responder a comentários de ouvintes nas minhas músicas, **para que** eu crie uma comunidade engajada. | (a) Notificação ao ouvinte quando respondido. (b) Filtro de palavras ofensivas ativo. | Nenhuma | USER-001 |
+| US-SUB1-010 | **Como** artista, **eu quero** excluir uma música do catálogo, **para que** eu tenha controle total sobre minha discografia. | (a) Confirmação dupla para evitar exclusão acidental. (b) Remoção imediata dos servidores. | US-SUB1-001 | USER-001 |
 
 > **Nota:** Conforme o requisito do trabalho, o grupo deve completar 10 histórias para cada subsistema (total de 30).
 
