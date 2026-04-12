@@ -130,8 +130,6 @@ As histórias seguem o padrão solicitado. Abaixo, apresentamos exemplos cruciai
 | Painel de Administração (SUB3) | 52 |
 | **Total do Projeto** | **152** |
 
-> **Nota:** A diferença para a soma individual (163 SP brutos) decorre do arredondamento por subsistema. O valor consolidado de **152 SP** é o referencial oficial para o planejamento de sprints.
-
 ---
 
 ### 2.3 Priorização MoSCoW (Tabela Consolidada)
@@ -145,41 +143,170 @@ Abaixo, a organização das funcionalidades conforme impacto no negócio. A prio
 | **C — Could Have** | US-SUB1-005, US-SUB1-006, US-SUB1-008, US-SUB1-009, US-SUB2-005, US-SUB2-007, US-SUB2-008, US-SUB3-001, US-SUB3-007, US-SUB3-008 | Funcionalidades desejáveis que agregam diferencial competitivo, implementadas se houver capacidade no sprint. |
 | **W — Won't Have** | US-SUB3-009 | Fora do escopo do MVP; pode ser considerada em versões futuras mediante validação de modelo de negócio. |
 
-#### Alterações em relação à versão original e justificativas
+---
 
-| ID | Versão Original | Versão Revisada | Justificativa |
-| :--- | :---: | :---: | :--- |
-| US-SUB1-004 | S | **M** | Biografia e links são centrais para a proposta de valor (conectar fãs a artistas independentes); ausência prejudica a experiência core. |
-| US-SUB1-010 | M | **S** | Exclusão de música é importante, mas a plataforma opera sem ela no MVP; menos crítico que o upload. |
-| US-SUB2-008 | S | **C** | Depende diretamente de US-SUB1-005 (C) e US-SUB3-001; coerência de dependência exige mesma categoria. |
-| US-SUB3-001 | S | **C** | Fluxo de verificação só faz sentido completo com US-SUB1-005 e US-SUB2-008; agrupamento correto em C. |
+## 3. Levantamento de Requisitos Não Funcionais
+
+### 3.1 Mapeamento de Requisitos Não Funcionais
+
+Os requisitos não funcionais do SoundWave foram mapeados com base nas categorias da norma ISO/IEC 25010 (modelo de qualidade de produto de software) e nas restrições de negócio e legais identificadas durante o levantamento. A tabela abaixo apresenta o mapeamento consolidado por categoria e por subsistema, evidenciando as diferenças de exigência entre os perfis de usuário.
+
+| ID | Categoria | Subsistema(s) | Título | Justificativa |
+| :--- | :--- | :--- | :--- | :--- |
+| NF-SUB2-001 | Desempenho | SUB2 | Latência de início de streaming | Experiência central do ouvinte; atrasos acima de 2s causam abandono da sessão (ISO/IEC 25010 — Eficiência de Desempenho). |
+| NF-SUB1-001 | Desempenho | SUB1 | Throughput de upload de áudio | Pipeline de ingestão de arquivos FLAC/WAV de até 200 MB deve ser eficiente para não frustrar o artista durante publicação. |
+| NF-ALL-001 | Escalabilidade | SUB1, SUB2, SUB3 | Suporte a acessos simultâneos | Plataforma de streaming está sujeita a picos de acesso em lançamentos; arquitetura deve escalar horizontalmente. |
+| NF-SUB3-001 | Segurança | SUB3 | Autenticação multifator obrigatória | O painel administrativo acessa dados sensíveis e operações críticas (take-down, banimentos, LGPD); exige nível de segurança superior aos demais subsistemas. |
+| NF-ALL-002 | Segurança | SUB1, SUB2, SUB3 | Conformidade com LGPD | Obrigação legal brasileira; impacta coleta, armazenamento e exclusão de dados de todos os usuários. |
+| NF-SUB2-002 | Disponibilidade | SUB2 | Uptime do serviço de streaming | Indisponibilidade do app do ouvinte impacta diretamente a receita e a retenção de usuários. |
+| NF-SUB3-002 | Disponibilidade | SUB3 | Disponibilidade do painel administrativo | Painel pode ter SLA ligeiramente inferior ao app do ouvinte, pois seu uso é interno e não contínuo. |
+| NF-SUB2-003 | Usabilidade | SUB2 | Acessibilidade e curva de aprendizado | O app deve ser acessível a diferentes perfis de ouvinte, incluindo usuários com deficiência visual (WCAG 2.1). |
+| NF-SUB1-002 | Usabilidade | SUB1 | Interface intuitiva para artistas | Artistas independentes podem não ter perfil técnico; o portal deve minimizar a curva de aprendizado. |
+| NF-ALL-003 | Portabilidade | SUB1, SUB2 | Suporte multiplataforma | SUB2 deve funcionar em mobile (iOS/Android) e web; SUB1 prioritariamente em web desktop. SUB3 exclusivamente em web. |
+| NF-SUB2-004 | Portabilidade | SUB2 | Adaptação de qualidade offline/rede instável | Mobile está sujeito a conexões instáveis; o app deve degradar graciosamente a qualidade do áudio (relacionado a US-SUB2-006). |
+| NF-ALL-004 | Manutenibilidade | SUB1, SUB2, SUB3 | Integração e entrega contínua (CI/CD) | Reduz tempo de lançamento de novas features e minimiza risco de regressões em produção. |
+
+### 3.2 Requisitos Diferenciados por Tipo de Usuário
+
+A tabela abaixo destaca as principais diferenças de exigência entre os subsistemas, justificando por que um mesmo atributo de qualidade pode ter métricas distintas para cada grupo de usuário.
+
+| Atributo | SUB1 — Portal do Artista (USER-001) | SUB2 — App do Ouvinte (USER-002) | SUB3 — Painel de Admin (USER-003) |
+| :--- | :--- | :--- | :--- |
+| **Segurança** | Autenticação padrão (usuário/senha + e-mail verificado) | Autenticação padrão (usuário/senha ou OAuth social) | **MFA obrigatório** + bloqueio após 3 tentativas + logs de auditoria completos |
+| **Disponibilidade** | 99,5% (uso esporádico para uploads e analytics) | **99,9%** (uso contínuo; indisponibilidade impacta receita diretamente) | 99,0% (uso interno, horário comercial) |
+| **Desempenho** | Upload assíncrono tolerável em até 30s para 200 MB | **Início de reprodução em até 2s**; adaptação de qualidade em tempo real | Respostas de painel em até 3s; operações de moderação podem tolerar latência maior |
+| **Usabilidade** | Interface web desktop, perfil semi-técnico | **Acessibilidade WCAG 2.1**; interface mobile-first para público amplo | Interface web, usuários com treinamento; menor exigência de descobrabilidade |
+| **Portabilidade** | Web desktop (Chrome, Firefox, Edge — últimas 2 versões) | **iOS 14+, Android 10+** e web mobile | Web desktop apenas |
+| **Manutenibilidade** | Cobertura de testes ≥ 70% | Cobertura de testes ≥ 80% (maior criticidade) | Cobertura de testes ≥ 70% |
+
+### 3.3 Detalhamento dos Requisitos Não Funcionais (Padrão IEEE-830)
 
 ---
 
-## 3. Requisitos Não Funcionais (Padronização IEEE-830)
-
-### 3.1 Mapeamento e Justificativa
-Os requisitos abaixo foram mapeados com base nos aprendizados de arquitetura de software e restrições de produto:
-
-1.  **Segurança (Conformidade LGPD):** O sistema deve anonimizar dados de ouvintes após exclusão de conta. **Justificativa:** Atendimento à restrição NF-CONST-002 e normas éticas de software.
-2.  **Desempenho (Streaming):** O buffering inicial não deve exceder 2 segundos em conexões 4G. **Justificativa:** Baseado na norma ISO/IEC 25010 para garantir a qualidade de experiência (QoE).
-
-### 3.2 Detalhamento de Requisito Não Funcional
+#### NF-SUB2-001 — Latência de Início de Streaming
 
 | Campo | Descrição |
 | :--- | :--- |
-| Requisito ID | NF-SUB2-001 |
-| Título | **Desempenho de Resposta no Streaming** |
-| Descrição | O sistema deve iniciar a reprodução de áudio (incluindo FLAC) em até 2 segundos. |
-| Entrada | Solicitação de reprodução (clique no Play). |
-| Processamento | O sistema requisita o pacote de áudio via CDN e inicia o pre-buffering. |
-| Saída | Áudio audível e início da barra de progresso. |
-| Restrições | Dependência da estabilidade da rede do usuário final. |
-| Critérios de Aceitação | (a) O tempo de resposta não excede 2 segundos em 95% das tentativas. (b) Ausência de engasgos após o play inicial. |
+| **Requisito ID** | NF-SUB2-001 |
+| **Título** | Desempenho de Resposta no Streaming |
+| **Descrição** | O sistema deve iniciar a reprodução de áudio (incluindo arquivos FLAC) em até 2 segundos após a solicitação do ouvinte, em condições de conexão 4G ou superior. |
+| **Entrada** | Solicitação de reprodução (clique no botão Play em qualquer música). |
+| **Processamento** | O sistema requisita o pacote inicial de áudio via CDN, realiza o pre-buffering dos primeiros segmentos e libera o fluxo de áudio para o player. |
+| **Saída** | Áudio audível ao ouvinte e barra de progresso em movimento. |
+| **Restrições** | Dependência da estabilidade e velocidade da rede do usuário final. Em conexões abaixo de 4G, aplica-se a degradação de qualidade (ver NF-SUB2-004). |
+| **Critérios de Aceitação** | (a) O tempo entre o clique no Play e o início do áudio não excede 2 segundos em 95% das tentativas monitoradas. (b) Ausência de interrupções (engasgos) nos primeiros 10 segundos de reprodução após o play inicial. |
+
+---
+
+#### NF-SUB1-001 — Throughput de Upload de Áudio
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-SUB1-001 |
+| **Título** | Desempenho de Upload de Arquivos de Áudio |
+| **Descrição** | O sistema deve processar o upload de arquivos de áudio em FLAC ou WAV de até 200 MB em no máximo 30 segundos em conexões de banda larga padrão (≥ 10 Mbps de upload). |
+| **Entrada** | Seleção e envio de arquivo de áudio pelo artista no Portal do Artista. |
+| **Processamento** | O arquivo é transmitido ao servidor via protocolo multipart, validado quanto ao formato e tamanho, e enfileirado para transcodificação assíncrona. |
+| **Saída** | Confirmação de recebimento exibida ao artista; arquivo disponível para publicação após processamento assíncrono. |
+| **Restrições** | Arquivos acima de 200 MB devem ser rejeitados antes do início da transferência. O tempo de transcodificação (geração do MP3) não está incluso nos 30 segundos, por ser processo assíncrono. |
+| **Critérios de Aceitação** | (a) Upload de arquivo de 200 MB concluído em até 30s em conexão de 10 Mbps em 90% das tentativas. (b) Exibição de barra de progresso durante o upload. (c) Mensagem de erro clara exibida ao artista em caso de falha ou formato inválido. |
+
+---
+
+#### NF-ALL-001 — Suporte a Acessos Simultâneos
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-ALL-001 |
+| **Título** | Escalabilidade Horizontal sob Picos de Acesso |
+| **Descrição** | A plataforma deve suportar ao menos 10.000 ouvintes simultâneos em streaming sem degradação perceptível de desempenho, com capacidade de escalonamento automático para absorver picos de até 3x esse volume em lançamentos de alto impacto. |
+| **Entrada** | Aumento súbito de requisições ao serviço de streaming (ex.: lançamento de álbum de artista com grande base de fãs). |
+| **Processamento** | O sistema aciona políticas de auto-scaling na infraestrutura de nuvem, adicionando instâncias de servidor conforme o volume de requisições ultrapassa thresholds predefinidos. |
+| **Saída** | Tempo de resposta e latência de streaming mantidos dentro dos SLAs definidos (NF-SUB2-001) mesmo sob carga elevada. |
+| **Restrições** | O escalonamento automático deve ocorrer em até 60 segundos após a detecção do pico. Custo de infraestrutura adicional deve ser monitorado para não ultrapassar o orçamento operacional. |
+| **Critérios de Aceitação** | (a) Testes de carga com 10.000 usuários simultâneos não devem elevar a latência de streaming acima de 2s em mais de 5% das sessões. (b) O sistema deve escalar automaticamente sem intervenção manual quando o CPU médio das instâncias ativas ultrapassar 70% por mais de 2 minutos. |
+
+---
+
+#### NF-SUB3-001 — Autenticação Multifator no Painel Administrativo
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-SUB3-001 |
+| **Título** | Segurança de Acesso ao Painel de Administração |
+| **Descrição** | O acesso ao Painel de Administração deve exigir obrigatoriamente autenticação multifator (MFA), com bloqueio automático da conta após 3 tentativas de login malsucedidas consecutivas. |
+| **Entrada** | Tentativa de login de um usuário administrador (USER-003). |
+| **Processamento** | Após validação correta de usuário e senha, o sistema exige um segundo fator (código TOTP via app autenticador ou código enviado por e-mail). O sistema registra cada tentativa de login no log de auditoria com IP, timestamp e resultado. |
+| **Saída** | Acesso concedido ao painel apenas após validação bem-sucedida dos dois fatores. Em caso de 3 falhas consecutivas, a conta é bloqueada e um alerta é enviado ao e-mail cadastrado. |
+| **Restrições** | O bloqueio deve ser manual (requer desbloqueio por outro administrador) para evitar ataques de negação de serviço por reset automático. O segundo fator deve ser renovado a cada sessão. |
+| **Critérios de Aceitação** | (a) 100% dos logins administrativos requerem o segundo fator; não há fluxo alternativo sem MFA. (b) Após 3 tentativas falhas, a conta é bloqueada imediatamente e o acesso é negado mesmo com credenciais corretas. (c) Cada tentativa de login (bem-sucedida ou não) é registrada no log de auditoria com IP e timestamp. |
+
+---
+
+#### NF-ALL-002 — Conformidade com LGPD
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-ALL-002 |
+| **Título** | Conformidade com a Lei Geral de Proteção de Dados (LGPD) |
+| **Descrição** | O sistema deve garantir que todos os dados pessoais de usuários sejam coletados com consentimento explícito, armazenados com criptografia, e definitivamente anonimizados ou eliminados mediante solicitação de exclusão, em conformidade com a Lei nº 13.709/2018. |
+| **Entrada** | Cadastro de novo usuário (coleta de dados) ou solicitação formal de exclusão de dados (direito ao esquecimento). |
+| **Processamento** | No cadastro: exibição de Política de Privacidade com aceite obrigatório e registro do consentimento com timestamp. Na exclusão: remoção em cascata de todos os registros pessoais identificáveis nos bancos de dados, arquivos de mídia e logs, seguida de anonimização dos dados estatísticos remanescentes. |
+| **Saída** | Confirmação de consentimento armazenada. Após exclusão: envio de e-mail de confirmação ao usuário e impossibilidade de recuperação dos dados removidos. |
+| **Restrições** | O processo de exclusão completa deve ser concluído em até 72 horas após a solicitação. Dados necessários para obrigações fiscais e legais podem ser retidos pelo prazo legal mínimo, devidamente isolados. |
+| **Critérios de Aceitação** | (a) Nenhum dado pessoal é coletado sem registro de consentimento explícito. (b) A exclusão solicitada é concluída em até 72h, com confirmação por e-mail ao usuário. (c) Após a exclusão, nenhuma consulta ao sistema retorna dados identificáveis do usuário excluído. (d) Dados em repouso são armazenados com criptografia AES-256. |
+
+---
+
+#### NF-SUB2-002 — Disponibilidade do Serviço de Streaming
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-SUB2-002 |
+| **Título** | Disponibilidade e Tolerância a Falhas do App do Ouvinte |
+| **Descrição** | O App do Ouvinte (SUB2) deve apresentar disponibilidade mínima de 99,9% ao mês (equivalente a no máximo ~43 minutos de indisponibilidade mensal), com mecanismo de tolerância a falhas que evite interrupção de sessões em andamento. |
+| **Entrada** | Qualquer acesso de ouvinte ao serviço de streaming, busca ou playlist. |
+| **Processamento** | O sistema utiliza balanceamento de carga entre múltiplas instâncias e regiões de disponibilidade. Em caso de falha de um nó, o tráfego é redirecionado automaticamente para instâncias saudáveis sem interrupção perceptível ao usuário. |
+| **Saída** | Serviço disponível e responsivo dentro dos SLAs de desempenho definidos (NF-SUB2-001). |
+| **Restrições** | Janelas de manutenção planejadas devem ser realizadas fora do horário de pico (entre 02h e 05h, horário de Brasília) e comunicadas com 48h de antecedência. |
+| **Critérios de Aceitação** | (a) Uptime mensal medido por monitoramento externo não inferior a 99,9%. (b) Falha de até 30% das instâncias ativas não deve causar interrupção de sessões de streaming em andamento. (c) Tempo de recuperação automática (failover) não excede 10 segundos. |
+
+---
+
+#### NF-SUB2-003 — Acessibilidade e Usabilidade do App do Ouvinte
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-SUB2-003 |
+| **Título** | Acessibilidade e Usabilidade — App do Ouvinte |
+| **Descrição** | O App do Ouvinte deve estar em conformidade com as diretrizes WCAG 2.1 nível AA, garantindo acessibilidade a usuários com deficiência visual, auditiva ou motora, e permitindo que um novo usuário realize sua primeira reprodução sem necessidade de tutorial ou suporte. |
+| **Entrada** | Acesso de qualquer usuário ao app, incluindo usuários de tecnologias assistivas (leitores de tela, navegação por teclado). |
+| **Processamento** | Todos os componentes de interface devem possuir rótulos semânticos acessíveis, contraste de cores adequado (mínimo 4,5:1 para texto normal) e navegação funcional sem uso exclusivo de mouse. |
+| **Saída** | Interface utilizável via leitor de tela (VoiceOver/TalkBack) e navegação por teclado; fluxo de primeira reprodução concluído em até 3 cliques a partir da tela inicial. |
+| **Restrições** | Conformidade WCAG 2.1 AA aplica-se às telas principais (busca, player, playlist). Funcionalidades secundárias devem atingir ao menos nível A. |
+| **Critérios de Aceitação** | (a) Auditoria com ferramenta automatizada (ex.: Axe, Lighthouse) não aponta violações de nível AA nas telas principais. (b) Teste com usuário real utilizando leitor de tela conclui o fluxo de busca e reprodução sem bloqueios. (c) Novo usuário (sem experiência prévia) reproduz sua primeira música em até 3 cliques a partir da tela inicial em teste de usabilidade. |
+
+---
+
+#### NF-ALL-003 — Suporte Multiplataforma
+
+| Campo | Descrição |
+| :--- | :--- |
+| **Requisito ID** | NF-ALL-003 |
+| **Título** | Portabilidade e Compatibilidade Multiplataforma |
+| **Descrição** | O SUB2 (App do Ouvinte) deve ser compatível com iOS 14+, Android 10+ e navegadores web modernos. O SUB1 (Portal do Artista) deve funcionar em navegadores web desktop. O SUB3 (Painel Admin) é exclusivo para web desktop. |
+| **Entrada** | Acesso de qualquer usuário a partir de seu dispositivo ou navegador. |
+| **Processamento** | O front-end do SUB2 é desenvolvido em framework mobile multiplataforma (ou web responsivo); o SUB1 e SUB3 são aplicações web responsivas testadas nos navegadores-alvo. |
+| **Saída** | Interface funcional e visualmente consistente em todos os ambientes suportados, sem quebras de layout ou perda de funcionalidade. |
+| **Restrições** | SUB3 não precisa ser responsivo para mobile; seu uso em smartphones não é um requisito suportado. Versões de navegadores mais antigas que as 2 últimas versões estáveis não precisam ser suportadas. |
+| **Critérios de Aceitação** | (a) Todos os fluxos críticos do SUB2 funcionam sem erros em iOS 14+, Android 10+, Chrome e Safari (últimas 2 versões). (b) SUB1 e SUB3 funcionam sem erros em Chrome, Firefox e Edge (últimas 2 versões) em resolução desktop (≥ 1280px). (c) Nenhum componente de interface depende exclusivamente de tecnologia não suportada pelos ambientes-alvo (ex.: Flash, ActiveX). |
 
 ---
 
 ## 4. Referências
-* **IEEE-830:** Práticas recomendadas para especificação de requisitos de software.
-* **ISO/IEC 25010:** Modelos de qualidade de produto de software.
-* **LGPD:** Lei Geral de Proteção de Dados (Brasil).
+
+IEEE STD 830-1998. **IEEE Recommended Practice for Software Requirements Specifications**. New York: Institute of Electrical and Electronics Engineers, 1998.
+
+ISO/IEC 25010:2011. **Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — System and software quality models**. Genebra: International Organization for Standardization, 2011.
+
+BRASIL. **Lei nº 13.709, de 14 de agosto de 2018**. Lei Geral de Proteção de Dados Pessoais (LGPD). Diário Oficial da União, Brasília, DF, 15 ago. 2018. Disponível em: https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm. Acesso em: abr. 2026.
