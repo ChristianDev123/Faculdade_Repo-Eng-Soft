@@ -1,7 +1,7 @@
 # Documento de Requisitos: Projeto SoundWave
 
 ## 1. Introdução
-Este documento apresenta o levantamento de requisitos para a startup **SoundWave**, uma plataforma de streaming focada em dar visibilidade a artistas independentes através de nichos musicais, fugindo dos algoritmos tendenciosos das grandes gravadoras.
+O SoundWave é uma plataforma de streaming voltada para artistas independentes e ouvintes que buscam nichos musicais fora do mainstream dominado por grandes gravadoras. O sistema visa democratizar o alcance musical através de algoritmos baseados em gênero e comunidades.
 
 ### 1.1 Identificação de Subsistemas e Grupos de Usuários
 Conforme as capacidades do produto, o sistema foi dividido nos seguintes subsistemas:
