@@ -39,3 +39,14 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 | Must Have do MoSCoW | Sim | Sim | Could Have| 
 | Múltiplos subsistemas/atores | Foco no Artista/Sistema | Ouvinte / Infra / CDN | Artista / Admin / Ouvinte |
 | Regras de negócio não-triviais | Validação e tamanho de arquivo |Transcodificação adaptativa | Ciclo de aprovação/rejeição |
+
+
+### 0.3 Casos de uso não modelados
+
+Os seguintes casos de uso foram explicitamente deixados fora do escopo de modelagem:
+
+*   **CRUDs de Playlists e Perfis (US-SUB2-003, US-SUB1-004):** Operações triviais de banco de dados que não agregam aprendizado na modelagem de domínio complexo.
+    
+*   **Sistema de Recomendação (US-SUB2-005):** Por depender de algoritmos de correlação heurística, foge do escopo de modelagem UML clássica, sendo tratado como caixa preta.
+    
+*   **Autenticação e LGPD (US-SUB3-003, US-SUB3-005):** Embora cruciais para o projeto, são fluxos padrões. A modelagem focou nas regras inerentes ao domínio de _streaming_ de áudio.
