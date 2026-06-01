@@ -35,6 +35,7 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 ### 0.2 Cobertura dos Critérios
 
 | Critério | Fatia 1 (Upload) | Fatia 2 (Streaming) | Fatia 3 (Verificação) |
+| :--- | :--- | :--- | :--- |
 | Must Have do MoSCoW | Sim | Sim | Could Have| 
 | Múltiplos subsistemas/atores | Foco no Artista/Sistema | Ouvinte / Infra / CDN | Artista / Admin / Ouvinte |
 | Regras de negócio não-triviais | Validação e tamanho de arquivo |Transcodificação adaptativa | Ciclo de aprovação/rejeição |
