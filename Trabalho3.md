@@ -6,25 +6,25 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 
 **Fatia 1 - Artista realiza upload de música lossless (FLAC/WAV)**
 
-*   **Casos de uso cobertos:** US-SUB1-001 (Upload FLAC/WAV), US-SUB1-007 (Editar metadados).
+*   **Casos de uso cobertos:** `US-SUB1-001` (Upload FLAC/WAV), `US-SUB1-007` (Editar metadados).
     
-*   **Por que é representativa:** Trata-se de um requisito _Must Have_ absoluto (sem músicas, não há plataforma). Além disso, carrega a principal restrição técnica do projeto (NF-CONST-001 e NF-CONST-003): o processamento de arquivos grandes (até 200MB) e a validação estrita de formato.
+*   **Por que é representativa:** Trata-se de um requisito _Must Have_ absoluto (sem músicas, não há plataforma). Além disso, carrega a principal restrição técnica do projeto (`NF-CONST-001` e `NF-CONST-003`): o processamento de arquivos grandes (até 200MB) e a validação estrita de formato.
     
 *   **O que se espera aprender:** A modelagem de fluxos com decisões de validação rigorosas e atividades assíncronas (o upload do arquivo versus a disponibilidade da música na plataforma).
     
 
 **Fatia 2 - Ouvinte reproduz música com transcodificação adaptativa**
 
-*   **Casos de uso cobertos:** US-SUB2-001 (Busca), US-SUB2-006 (Ajuste de qualidade por conexão).
+*   **Casos de uso cobertos:** `US-SUB2-001` (Busca), `US-SUB2-006` (Ajuste de qualidade por conexão).
     
-*   **Por que é representativa:** Atravessa o aplicativo do ouvinte e a infraestrutura de streaming. Contém a regra de negócio mais complexa de performance: monitorar a rede e degradar graciosamente o arquivo (Lossless para MP3) caso a conexão oscile, garantindo o requisito NF-SUB2-001 (Latência < 2s).
+*   **Por que é representativa:** Atravessa o aplicativo do ouvinte e a infraestrutura de streaming. Contém a regra de negócio mais complexa de performance: monitorar a rede e degradar graciosamente o arquivo (Lossless para MP3) caso a conexão oscile, garantindo o requisito `NF-SUB2-001` (Latência < 2s).
     
 *   **O que se espera aprender:** A representação de um fluxo síncrono distribuído com caminhos de exceção (queda de rede) e requisições a serviços externos (CDN/Transcoder).
     
 
 **Fatia 3 - Ciclo de vida do Selo de Verificado**
 
-*   **Casos de uso cobertos:** US-SUB1-005 (Solicitar selo), US-SUB3-001 (Admin analisa selo), US-SUB2-008 (Ouvinte visualiza selo).
+*   **Casos de uso cobertos:** `US-SUB1-005` (Solicitar selo), `US-SUB3-001` (Admin analisa selo), `US-SUB2-008` (Ouvinte visualiza selo).
     
 *   **Por que é representativa:** Constitui a fatia ideal para exercitar a interação entre múltiplos atores (Artista solicita, Administrador modera, Ouvinte consome). Possui transições de estado bem definidas e dependências inter-subsistemas.
     
@@ -123,15 +123,15 @@ Os seguintes casos de uso foram explicitamente deixados fora do escopo de modela
 
 ### 1.1. Critérios de Qualidade Aplicados
 
-*   **Herança e Abstração:** Foi utilizada uma classe abstrata Usuario para isolar propriedades comuns de autenticação, derivando as responsabilidades específicas para as subclasses Artista, Ouvinte e Administrador.
+*   **Herança e Abstração:** Foi utilizada uma classe abstrata Usuario para isolar propriedades comuns de autenticação, derivando as responsabilidades específicas para as subclasses `Artista`, `Ouvinte` e `Administrador`.
 
-*   **Composição:** A relação entre Musica e ArquivoAudio foi modelada como composição, dado que um arquivo físico não possui semântica no sistema sem estar vinculado à entidade lógica da música.
+*   **Composição:** A relação entre `Musica` e `ArquivoAudio` foi modelada como composição, dado que um arquivo físico não possui semântica no sistema sem estar vinculado à entidade lógica da música.
 
-*   **Resolução do Domínio:** Uma Musica pode conter múltiplos registros de ArquivoAudio (e.g., o arquivo **FLAC** original e o **MP3** transcodificado), atendendo à necessidade da transcodificação adaptativa (Fatia 2).
+*   **Resolução do Domínio:** Uma `Musica` pode conter múltiplos registros de `ArquivoAudio` (e.g., o arquivo **FLAC** original e o **MP3** transcodificado), atendendo à necessidade da transcodificação adaptativa (Fatia 2).
 
 ## 2. Modelo Entidade-Relacionamento (MER)
 
-No MER, visando a otimização de consultas em um cenário de alto volume de acessos (streaming), optou-se pela estratégia de Tabela Única (Single Table) com a coluna discriminadora tipo_usuario. Atributos específicos ficam nulos para os perfis que não os utilizam.
+No MER, visando a otimização de consultas em um cenário de alto volume de acessos (streaming), optou-se pela estratégia de Tabela Única (Single Table) com a coluna discriminadora `tipo_usuario`. Atributos específicos ficam nulos para os perfis que não os utilizam.
 
 ```
     USUARIO {
@@ -233,7 +233,7 @@ No MER, visando a otimização de consultas em um cenário de alto volume de ace
 
 ### 3.3. Fatia 3 - Ciclo de vida da Verificação (Diagrama de Estados)
 
-**Justificativa da escolha:** A entidade SolicitacaoVerificacao possui um ciclo de vida estrito. O diagrama de estados expõe os gatilhos e as transições que alteram o status da aprovação dentro do sistema.
+**Justificativa da escolha:** A entidade `SolicitacaoVerificacao` possui um ciclo de vida estrito. O diagrama de estados expõe os gatilhos e as transições que alteram o status da aprovação dentro do sistema.
 
 ```
     [*] --> Pendente : Artista envia doc
