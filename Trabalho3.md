@@ -1,5 +1,4 @@
 ## 0. Seleção de Escopo
----------------------
 
 Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade, priorizando a profundidade técnica em três fluxos centrais que representam a essência da plataforma e os desafios de arquitetura mapeados nos trabalhos anteriores.
 
@@ -50,3 +49,131 @@ Os seguintes casos de uso foram explicitamente deixados fora do escopo de modela
 *   **Sistema de Recomendação (US-SUB2-005):** Por depender de algoritmos de correlação heurística, foge do escopo de modelagem UML clássica, sendo tratado como caixa preta.
     
 *   **Autenticação e LGPD (US-SUB3-003, US-SUB3-005):** Embora cruciais para o projeto, são fluxos padrões. A modelagem focou nas regras inerentes ao domínio de _streaming_ de áudio.
+
+
+## 1. Diagrama de Classes
+
+```
+    class Usuario {
+        <<abstract>>
+        - UUID id
+        - String nome
+        - String email
+        - String senhaHash
+        + autenticar() boolean
+    }
+
+    class Artista {
+        - String biografia
+        - String[] linksExternos
+        - boolean isVerificado
+        + solicitarVerificacao(documento)
+        + realizarUpload(arquivo, metadados)
+    }
+
+    class Ouvinte {
+        - String tipoAssinatura
+        + buscarMusica(query)
+        + reproduzir(musica)
+    }
+
+    class Administrador {
+        - String nivelAcesso
+        + analisarSolicitacao(solicitacao, decisao)
+    }
+
+    class Musica {
+        - UUID id
+        - String titulo
+        - String genero
+        - Date dataPublicacao
+        - int totalPlays
+        + getMelhorFormato(conexaoRede) ArquivoAudio
+        + atualizarMetadados(novosDados)
+    }
+
+    class ArquivoAudio {
+        - UUID id
+        - String formato
+        - float tamanhoMB
+        - int bitrate
+        - String urlCDN
+        + stream() byte[]
+    }
+
+    class SolicitacaoVerificacao {
+        - UUID id
+        - Date dataSolicitacao
+        - String status
+        - String documentoUrl
+        - String justificativa
+        + aprovar()
+        + reprovar(motivo)
+    }
+
+    Usuario <|-- Artista
+    Usuario <|-- Ouvinte
+    Usuario <|-- Administrador
+
+    Artista "1" -- "0..*" Musica : publica >
+    Musica "1" *-- "1..*" ArquivoAudio : contem >
+    Artista "1" -- "0..1" SolicitacaoVerificacao : abre >
+    Administrador "1" -- "0..*" SolicitacaoVerificacao : modera >
+```
+
+### 1.1. Critérios de Qualidade Aplicados
+
+*   **Herança e Abstração:** Foi utilizada uma classe abstrata Usuario para isolar propriedades comuns de autenticação, derivando as responsabilidades específicas para as subclasses Artista, Ouvinte e Administrador.
+
+*   **Composição:** A relação entre Musica e ArquivoAudio foi modelada como composição, dado que um arquivo físico não possui semântica no sistema sem estar vinculado à entidade lógica da música.
+
+*   **Resolução do Domínio:** Uma Musica pode conter múltiplos registros de ArquivoAudio (e.g., o arquivo **FLAC** original e o **MP3** transcodificado), atendendo à necessidade da transcodificação adaptativa (Fatia 2).
+
+## 2. Modelo Entidade-Relacionamento (MER)
+
+No MER, visando a otimização de consultas em um cenário de alto volume de acessos (streaming), optou-se pela estratégia de Tabela Única (Single Table) com a coluna discriminadora tipo_usuario. Atributos específicos ficam nulos para os perfis que não os utilizam.
+
+```
+    USUARIO {
+        uuid id PK
+        string tipo_usuario "DISCRIMINATOR: ARTISTA, OUVINTE, ADMIN"
+        string nome
+        string email
+        string senha_hash
+        string biografia
+        boolean is_verificado
+    }
+
+    MUSICA {
+        uuid id PK
+        uuid artista_id FK
+        string titulo
+        string genero
+        timestamp data_publicacao
+        int total_plays
+    }
+
+    ARQUIVO_AUDIO {
+        uuid id PK
+        uuid musica_id FK
+        string formato "FLAC, WAV, MP3"
+        float tamanho_mb
+        int bitrate
+        string url_cdn
+    }
+
+    SOLICITACAO_VERIFICACAO {
+        uuid id PK
+        uuid artista_id FK
+        uuid admin_id FK "Nullable"
+        string status "PENDENTE, APROVADO, REPROVADO"
+        timestamp data_solicitacao
+        string documento_url
+        string justificativa
+    }
+
+    USUARIO ||--o{ MUSICA : publica
+    MUSICA ||--|{ ARQUIVO_AUDIO : possui
+    USUARIO ||--o| SOLICITACAO_VERIFICACAO : solicita
+    USUARIO ||--o{ SOLICITACAO_VERIFICACAO : avalia
+```
