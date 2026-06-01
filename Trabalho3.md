@@ -2,9 +2,9 @@
 
 Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade, priorizando a profundidade técnica em três fluxos centrais que representam a essência da plataforma e os desafios de arquitetura mapeados nos trabalhos anteriores.
 
-### 0.1 Fatias Selecionadas
+### 0.1. Fatias Selecionadas
 
-**Fatia 1 — Artista realiza upload de música lossless (FLAC/WAV)**
+**Fatia 1 - Artista realiza upload de música lossless (FLAC/WAV)**
 
 *   **Casos de uso cobertos:** US-SUB1-001 (Upload FLAC/WAV), US-SUB1-007 (Editar metadados).
     
@@ -13,7 +13,7 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 *   **O que se espera aprender:** A modelagem de fluxos com decisões de validação rigorosas e atividades assíncronas (o upload do arquivo versus a disponibilidade da música na plataforma).
     
 
-**Fatia 2 — Ouvinte reproduz música com transcodificação adaptativa**
+**Fatia 2 - Ouvinte reproduz música com transcodificação adaptativa**
 
 *   **Casos de uso cobertos:** US-SUB2-001 (Busca), US-SUB2-006 (Ajuste de qualidade por conexão).
     
@@ -22,7 +22,7 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 *   **O que se espera aprender:** A representação de um fluxo síncrono distribuído com caminhos de exceção (queda de rede) e requisições a serviços externos (CDN/Transcoder).
     
 
-**Fatia 3 — Ciclo de vida do Selo de Verificado**
+**Fatia 3 - Ciclo de vida do Selo de Verificado**
 
 *   **Casos de uso cobertos:** US-SUB1-005 (Solicitar selo), US-SUB3-001 (Admin analisa selo), US-SUB2-008 (Ouvinte visualiza selo).
     
@@ -31,7 +31,7 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 *   **O que se espera aprender:** A expressão do ciclo de vida de uma entidade através de um diagrama de estados, mapeando eventos, guardas e ações de notificação.
     
 
-### 0.2 Cobertura dos Critérios
+### 0.2. Cobertura dos Critérios
 
 | Critério | Fatia 1 (Upload) | Fatia 2 (Streaming) | Fatia 3 (Verificação) |
 | :--- | :--- | :--- | :--- |
@@ -40,7 +40,7 @@ Neste trabalho, optou-se por não modelar o sistema SoundWave em sua totalidade,
 | Regras de negócio não-triviais | Validação e tamanho de arquivo |Transcodificação adaptativa | Ciclo de aprovação/rejeição |
 
 
-### 0.3 Casos de uso não modelados
+### 0.3. Casos de uso não modelados
 
 Os seguintes casos de uso foram explicitamente deixados fora do escopo de modelagem:
 
@@ -177,3 +177,82 @@ No MER, visando a otimização de consultas em um cenário de alto volume de ace
     USUARIO ||--o| SOLICITACAO_VERIFICACAO : solicita
     USUARIO ||--o{ SOLICITACAO_VERIFICACAO : avalia
 ```
+
+
+## 3. Modelagem Comportamental
+
+### 3.1. Fatia 1 - Upload de Áudio Lossless (Diagrama de Atividades)
+
+**Justificativa da escolha:** O Diagrama de Atividades é o mais adequado para esta fatia, pois o upload configura um fluxo de trabalho estruturado por tomadas de decisão (validação de formato e tamanho) distribuídas em raias distintas (Interface do Artista e Servidor).
+
+```
+    subgraph Artista [Portal do Artista (Front-end)]
+        A([Inicia Upload da Música]) --> B(Seleciona arquivo de áudio)
+        B --> C{Tamanho <= 200MB?}
+        C -- Não --> D[Exibe erro de limite de tamanho] --> Z([Fim])
+        C -- Sim --> E[Preenche Metadados]
+        E --> F(Submete formulário)
+    end
+
+    subgraph Backend [Servidor SoundWave]
+        F --> G{Formato é FLAC/WAV?}
+        G -- Não --> H[Retorna erro de formato inválido]
+        H --> I[Front: Exibe erro ao artista] --> Z
+        G -- Sim --> J[Salva metadados no DB]
+        J --> K[Envia arquivo para Storage]
+        K --> L[Enfileira job de transcodificação MP3]
+    end
+    L --> M([Upload Concluído - Música em Processamento])
+```
+
+### 3.2. Fatia 2 - Transcodificação Adaptativa no Streaming (Diagrama de Sequência)
+
+**Justificativa da escolha:** A reprodução adaptativa exige troca de mensagens síncronas e assíncronas entre o dispositivo cliente, a **API** e a **CDN**. O diagrama de sequência demonstra o bloco condicional (alt) acionado em cenários de instabilidade de rede.
+
+```
+    actor Ouvinte
+    participant App as App do Ouvinte
+    participant API as SoundWave API
+    participant CDN as Storage / CDN
+
+    Ouvinte->>App: Clica em "Play" na Música
+    App->>API: getStreamInfo(musicaId)
+    API-->>App: Retorna URLs (FLAC e MP3)
+    App->>CDN: Inicia buffer do FLAC (Lossless)
+    
+    alt Conexão Estável (4G/Wi-Fi)
+        CDN-->>App: Retorna chunks FLAC
+        App->>Ouvinte: Reproduz áudio alta fidelidade
+    else Conexão Instável (Latência > 2s)
+        App->>CDN: Aborta request FLAC
+        App->>CDN: Inicia buffer do fallback (MP3)
+        CDN-->>App: Retorna chunks MP3
+        App->>Ouvinte: Reproduz áudio comprimido sem interrupções
+    end
+```
+
+### 3.3. Fatia 3 - Ciclo de vida da Verificação (Diagrama de Estados)
+
+**Justificativa da escolha:** A entidade SolicitacaoVerificacao possui um ciclo de vida estrito. O diagrama de estados expõe os gatilhos e as transições que alteram o status da aprovação dentro do sistema.
+
+```
+    [*] --> Pendente : Artista envia doc
+    
+    state Pendente {
+        %% Aguardando ação na fila do painel administrativo
+    }
+    
+    Pendente --> EmAnalise : Admin abre solicitação [doc legível]
+    Pendente --> Cancelada : Artista exclui conta
+    
+    state EmAnalise {
+        %% Admin validando identidade
+    }
+    
+    EmAnalise --> Aprovado : Admin aprova
+    EmAnalise --> Reprovado : Admin reprova [com justificativa]
+    
+    Aprovado --> [*] : Sistema aplica selo
+    Reprovado --> [*] : Artista notificado
+```
+
