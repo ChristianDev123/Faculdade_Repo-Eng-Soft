@@ -256,3 +256,23 @@ No MER, visando a otimização de consultas em um cenário de alto volume de ace
     Reprovado --> [*] : Artista notificado
 ```
 
+## 4. Casos de Teste das Fatias Modeladas
+
+| ID | Fatia / Caso de Uso | Pré-condições | Dados de entrada | Passos | Resultado esperado | Critério de aprovação | Severidade |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC-F1-01** | F1 / US-SUB1-001 | Artista autenticado. | Arquivo "som.flac" (150MB). | 1) Clica em Upload; 2) Anexa arquivo; 3) Clica Salvar. | O arquivo é recebido e o job de transcodificação é criado. | (a) Registro criado no BD; (b) Arquivo alocado no Storage. | Média |
+| **TC-F1-02** | F1 / US-SUB1-001 | Artista autenticado. | Arquivo "mix.wav" (201MB). | 1) Clica em Upload; 2) Anexa arquivo. | Upload bloqueado no *client-side*. *(Teste de Fronteira)* | (a) Exibição de aviso "Tamanho excedido"; (b) Tráfego não iniciado. | Baixa |
+| **TC-F2-01** | F2 / US-SUB2-006 | Ouvinte logado, conexão Wi-Fi estável. | Música ID #100. | 1) O usuário aciona o Play. | Áudio inicia em FLAC em menos de 2s. | Player reporta consumo de pacotes FLAC sem falhas. | Alta |
+| **TC-F2-02** | F2 / US-SUB2-006 | Ouvinte logado, rede simulando alta latência. | Música ID #100. | 1) O usuário aciona o Play; 2) Rede é estrangulada. | Sistema ajusta a requisição para MP3. *(Caminho Crítico)* | Player altera o stream para URL do MP3 sem interromper o áudio. | Crítica |
+| **TC-F3-01** | F3 / US-SUB3-001 | Administrador logado. | Solicitação do Artista X. | 1) Acessa a solicitação; 2) Confirma aprovação. | Status alterado para Aprovado; parâmetro `is_verificado` ativado. | O ícone de verificação passa a ser renderizado no perfil. | Alta |
+| **TC-F3-02** | F3 / US-SUB1-005 | Artista logado com solicitação pendente. | N/A | 1) Acessa aba Verificação; 2) Tenta anexar novo doc. | Botão de submissão bloqueado. *(Transição inválida)* | (a) O sistema bloqueia duplicidade; (b) Status visualizado como pendente. | Média |
+
+## 5. Rastreabilidade
+
+| Fatia | Casos de Uso (T2) | Classes Envolvidas | Entidades (MER) | Diagrama Comportamental | Casos de Teste |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Fatia 1 (Upload Lossless)** | US-SUB1-001, US-SUB1-007 | `Artista`, `Musica`, `ArquivoAudio` | `USUARIO`, `MUSICA`, `ARQUIVO_AUDIO` | **Atividades** (Seção 3.1) | TC-F1-01, TC-F1-02 |
+| **Fatia 2 (Streaming Adaptativo)** | US-SUB2-001, US-SUB2-006 | `Ouvinte`, `Musica`, `ArquivoAudio` | `USUARIO`, `ARQUIVO_AUDIO` | **Sequência** (Seção 3.2) | TC-F2-01, TC-F2-02 |
+| **Fatia 3 (Ciclo do Selo)** | US-SUB1-005, US-SUB3-001, US-SUB2-008 | `Artista`, `Administrador`, `SolicitacaoVerificacao` | `USUARIO`, `SOLICITACAO_VERIFICACAO` | **Estados** (Seção 3.3) | TC-F3-01, TC-F3-02 |
+
+---

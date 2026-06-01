@@ -301,12 +301,3 @@ A tabela abaixo destaca as principais diferenças de exigência entre os subsist
 | **Restrições** | SUB3 não precisa ser responsivo para mobile; seu uso em smartphones não é um requisito suportado. Versões de navegadores mais antigas que as 2 últimas versões estáveis não precisam ser suportadas. |
 | **Critérios de Aceitação** | (a) Todos os fluxos críticos do SUB2 funcionam sem erros em iOS 14+, Android 10+, Chrome e Safari (últimas 2 versões). (b) SUB1 e SUB3 funcionam sem erros em Chrome, Firefox e Edge (últimas 2 versões) em resolução desktop (≥ 1280px). (c) Nenhum componente de interface depende exclusivamente de tecnologia não suportada pelos ambientes-alvo (ex.: Flash, ActiveX). |
 
----
-
-## 4. Referências
-
-IEEE STD 830-1998. **IEEE Recommended Practice for Software Requirements Specifications**. New York: Institute of Electrical and Electronics Engineers, 1998.
-
-ISO/IEC 25010:2011. **Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — System and software quality models**. Genebra: International Organization for Standardization, 2011.
-
-BRASIL. **Lei nº 13.709, de 14 de agosto de 2018**. Lei Geral de Proteção de Dados Pessoais (LGPD). Diário Oficial da União, Brasília, DF, 15 ago. 2018. Disponível em: https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm. Acesso em: abr. 2026.
