@@ -6,3 +6,4 @@ Repositório com os trabalhos da disciplina de Engenharia de Software.
 
 - **trabalho1.md** — Visão Geral do Produto  
 - **trabalho2.md** — Documento de Requisitos
+- **trabalho3.md** - Modelagem
